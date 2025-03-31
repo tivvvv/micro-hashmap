@@ -29,6 +29,13 @@ public class MyHashMap<K, V> {
     }
 
     public V remove(K key) {
+        for (int i = 0; i < table.size(); i++) {
+            Node<K, V> node = table.get(i);
+            if (node.key.equals(key)) {
+                Node<K, V> removed = table.remove(i);
+                return removed.value;
+            }
+        }
         return null;
     }
 
