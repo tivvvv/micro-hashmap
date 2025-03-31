@@ -39,6 +39,10 @@ public class MyHashMap<K, V> {
         return null;
     }
 
+    public int size() {
+        return table.size();
+    }
+
     class Node<K, V> {
 
         K key;
