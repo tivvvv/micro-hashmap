@@ -20,6 +20,11 @@ public class MyHashMap<K, V> {
     }
 
     public V get(K key) {
+        for (Node<K, V> node : table) {
+            if (node.key.equals(key)) {
+                return node.value;
+            }
+        }
         return null;
     }
 
