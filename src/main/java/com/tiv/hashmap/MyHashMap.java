@@ -6,49 +6,49 @@ public class MyHashMap<K, V> {
 
     public V put(K key, V value) {
         int keyIndex = indexOf(key);
-        Node<K, V> node = table[keyIndex];
-        if (node == null) {
+        Node<K, V> head = table[keyIndex];
+        if (head == null) {
             table[keyIndex] = new Node<>(key, value);
             return null;
         }
         while (true) {
-            if (node.key.equals(key)) {
-                V oldValue = node.value;
-                node.value = value;
+            if (head.key.equals(key)) {
+                V oldValue = head.value;
+                head.value = value;
                 return oldValue;
             }
-            if (node.next == null) {
-                node.next = new Node<>(key, value);
+            if (head.next == null) {
+                head.next = new Node<>(key, value);
                 return null;
             }
-            node = node.next;
+            head = head.next;
         }
     }
 
     public V get(K key) {
         int keyIndex = indexOf(key);
-        Node<K, V> node = table[keyIndex];
-        while (node != null) {
-            if (node.key.equals(key)) {
-                return node.value;
+        Node<K, V> head = table[keyIndex];
+        while (head != null) {
+            if (head.key.equals(key)) {
+                return head.value;
             }
-            node = node.next;
+            head = head.next;
         }
         return null;
     }
 
     public V remove(K key) {
         int keyIndex = indexOf(key);
-        Node<K, V> node = table[keyIndex];
-        if (node == null) {
+        Node<K, V> head = table[keyIndex];
+        if (head == null) {
             return null;
         }
-        if (node.key.equals(key)) {
-            table[keyIndex] = node.next;
-            return node.value;
+        if (head.key.equals(key)) {
+            table[keyIndex] = head.next;
+            return head.value;
         }
-        Node<K, V> pre = node;
-        Node<K, V> cur = node.next;
+        Node<K, V> pre = head;
+        Node<K, V> cur = head.next;
         while (cur != null) {
             if (cur.key.equals(key)) {
                 pre.next = cur.next;
