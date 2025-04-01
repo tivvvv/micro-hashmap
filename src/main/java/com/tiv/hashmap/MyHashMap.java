@@ -38,7 +38,25 @@ public class MyHashMap<K, V> {
     }
 
     public V remove(K key) {
-
+        int keyIndex = indexOf(key);
+        Node<K, V> node = table[keyIndex];
+        if (node == null) {
+            return null;
+        }
+        if (node.key.equals(key)) {
+            table[keyIndex] = node.next;
+            return node.value;
+        }
+        Node<K, V> pre = node;
+        Node<K, V> cur = node.next;
+        while (cur != null) {
+            if (cur.key.equals(key)) {
+                pre.next = cur.next;
+                return cur.value;
+            }
+            pre = pre.next;
+            cur = cur.next;
+        }
         return null;
     }
 
@@ -54,6 +72,7 @@ public class MyHashMap<K, V> {
 
         K key;
         V value;
+        Node<K, V> pre;
         Node<K, V> next;
 
         public Node(K key, V value) {
