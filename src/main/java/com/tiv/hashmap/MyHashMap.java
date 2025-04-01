@@ -4,11 +4,14 @@ public class MyHashMap<K, V> {
 
     private Node<K, V>[] table = new Node[16];
 
+    private int size = 0;
+
     public V put(K key, V value) {
         int keyIndex = indexOf(key);
         Node<K, V> head = table[keyIndex];
         if (head == null) {
             table[keyIndex] = new Node<>(key, value);
+            size++;
             return null;
         }
         while (true) {
@@ -19,6 +22,7 @@ public class MyHashMap<K, V> {
             }
             if (head.next == null) {
                 head.next = new Node<>(key, value);
+                size++;
                 return null;
             }
             head = head.next;
@@ -45,6 +49,7 @@ public class MyHashMap<K, V> {
         }
         if (head.key.equals(key)) {
             table[keyIndex] = head.next;
+            size--;
             return head.value;
         }
         Node<K, V> pre = head;
@@ -52,6 +57,7 @@ public class MyHashMap<K, V> {
         while (cur != null) {
             if (cur.key.equals(key)) {
                 pre.next = cur.next;
+                size--;
                 return cur.value;
             }
             pre = pre.next;
@@ -61,7 +67,7 @@ public class MyHashMap<K, V> {
     }
 
     public int size() {
-        return 0;
+        return size;
     }
 
     private int indexOf(Object key) {
