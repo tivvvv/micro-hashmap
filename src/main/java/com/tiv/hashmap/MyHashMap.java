@@ -26,7 +26,14 @@ public class MyHashMap<K, V> {
     }
 
     public V get(K key) {
-
+        int keyIndex = indexOf(key);
+        Node<K, V> node = table[keyIndex];
+        while (node != null) {
+            if (node.key.equals(key)) {
+                return node.value;
+            }
+            node = node.next;
+        }
         return null;
     }
 
