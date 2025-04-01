@@ -6,12 +6,15 @@ public class MyHashMap<K, V> {
 
     private int size = 0;
 
+    private double factor = 0.75;
+
     public V put(K key, V value) {
         int keyIndex = indexOf(key);
         Node<K, V> head = table[keyIndex];
         if (head == null) {
             table[keyIndex] = new Node<>(key, value);
             size++;
+            resizeIfNecessary();
             return null;
         }
         while (true) {
@@ -23,6 +26,7 @@ public class MyHashMap<K, V> {
             if (head.next == null) {
                 head.next = new Node<>(key, value);
                 size++;
+                resizeIfNecessary();
                 return null;
             }
             head = head.next;
@@ -68,6 +72,33 @@ public class MyHashMap<K, V> {
 
     public int size() {
         return size;
+    }
+
+    private void resizeIfNecessary() {
+        if (size < table.length * factor) {
+            return;
+        }
+        Node<K, V>[] newTable = new Node[table.length * 2];
+        for (Node<K, V> head : table) {
+            if (head == null) {
+                continue;
+            }
+            Node<K, V> cur = head;
+            while (cur != null) {
+                int newIndex = cur.key.hashCode() % newTable.length;
+                Node<K, V> next = cur.next;
+                if (newTable[newIndex] == null) {
+                    cur.next = null;
+                    newTable[newIndex] = cur;
+                    cur = next;
+                } else {
+                    cur.next = newTable[newIndex];
+                    newTable[newIndex] = cur;
+                    cur = next;
+                }
+            }
+        }
+        table = newTable;
     }
 
     private int indexOf(Object key) {
